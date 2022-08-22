@@ -7,7 +7,7 @@ import { ContentText, CardTitle } from "./Text";
 
 export function Cards({ title, content, iconName, background, color }) {
   return (
-    <View style={{ backgroundColor: background, marginTop: 30 }}>
+    <View style={[{ backgroundColor: background },styles.card ]}>
       <View style={styles.cardContent}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           {iconName ? (
@@ -28,6 +28,14 @@ export function Cards({ title, content, iconName, background, color }) {
 }
 
 const styles = StyleSheet.create({
+  card: {
+    marginTop: 30,
+    borderRadius: 5,
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+  },
   cardContent: {
     margin: 25,
   },

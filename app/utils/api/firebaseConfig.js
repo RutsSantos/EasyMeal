@@ -1,4 +1,3 @@
-import firestore from "@react-native-firebase/firestore";
 import {
   randomCreator,
   storeData,
@@ -6,42 +5,28 @@ import {
   createShoppingList,
 } from "../Helpers";
 import { Storage } from "../../constants/Storage";
-import { auth } from "../../../firebase";
+import { auth, firestoreApp as firestore } from "../../../firebase";
 
 export function addUser(user) {
   //Adds user to firebase
-  firestore()
-    .collection("users")
-    .doc(user.email)
-    .set({
-      name: user.name,
-      email: user.email,
-      password: user.password,
-      date_join: firestore.FieldValue.serverTimestamp(),
-    })
+  auth.createUserWithEmailAndPassword(user.email, user.password)
     .then(() => console.log("User added!"));
 }
 
-export function authenticateUser(userId, password, navigation) {
+export function authenticateUser(email, password, navigation) {
   //Authenticate the user on Login
-  getData(Storage.USERS).then((data) => {
-    data.forEach((elem) => {
-      if (elem.email === userId && elem.password === password) {
-        elem.week_menu &&
-          storeData(Storage.WEEK_MENU, elem.week_menu).then(() =>
-            console.log("Semana agregada desde firebase"),
-          );
-        elem.shopping_list &&
-          storeData(Storage.SHOPPING, elem.shopping_list).then(() =>
-            console.log("Shopping List agregado desde firebase"),
-          );
-        storeData(Storage.USER, elem).then(() =>
-          navigation.navigate("AppHome"),
-        );
-        return true;
-      }
-    });
+  auth.signInWithEmailAndPassword(email, password).catch(() => {
+    addUser({ email, password })
   });
+
+  storeData(Storage.USER, auth.currentUser);
+
+  navigation.navigate("AppHome")
+}
+
+export function logout() {
+  if (auth.currentUser)
+    auth.signOut();
 }
 
 export async function getUsers() {
@@ -55,11 +40,14 @@ export async function getUsers() {
 
 export async function getFoodItem() {
   //Get the list of food and transforme it in a random array of food per week
+  console.log("breakfast, meal, dinner");
+
   var foodlist = [];
   const [breakfast, meal, dinner] = [[], [], []];
   await firestoreRequest("desayunos", breakfast, foodlist);
   await firestoreRequest("almuerzos", meal, foodlist);
   await firestoreRequest("cenas", dinner, foodlist);
+  console.log(breakfast, meal, dinner);
   const week = randomCreator(foodlist);
   await storeData(Storage.WEEK_MENU, week);
   const user = await getData(Storage.USER);
@@ -91,7 +79,8 @@ async function firestoreRequest(collection, array, foodList) {
       documentSnapshot.forEach((doc) => {
         array.push(doc.data());
       });
-    });
+    })
+    .catch(error => console.warn(error));
   foodList && foodList.push({ [collection]: array });
   return array;
 }

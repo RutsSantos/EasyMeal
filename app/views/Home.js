@@ -3,10 +3,10 @@ import {
   Modal,
   View,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Colors from "../constants/Colors";
 import {Storage} from "../constants/Storage";
 import { Title, SubTitle } from "../components/Text";
@@ -31,31 +31,35 @@ export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.content}>
-        <Modal
-          animationType='slide'
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
+        <View style={{paddingTop: 60}}>
+            <SubTitle text='Bienvenido de vuelta!' color={Colors.ACCENT} size={22} />
+            <Title text={name} />
+        </View>
+        
+        <View
+          style={{
+            flexDirection: "row",
+            marginVertical: 40,
           }}>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-
-              marginTop: 122,
-              marginHorizontal: 40,
-            }}>
+          <ActionButton
+            text='Despensa'
+            iconName='photo-camera'
+            group="miscellaneous"
+            onClick={() => navigation.navigate("Pantry")}
+          />
+          <ActionButton
+            text='Semana'
+            iconName='cutlery'
+            onClick={() => navigation.navigate("WeekView")}
+          />
+          <ActionButton
+            text='Compras'
+            iconName='shopping-cart'
+            onClick={() => navigation.navigate("ShoppingList")}
+          />
+        </View>
+        <View>
             <View style={styles.modalContent}>
-              <TouchableOpacity
-                onPress={() => setModalVisible(!modalVisible)}
-                style={{ alignSelf: "flex-end" }}>
-                <Icon
-                  name='close-button'
-                  color={Colors.ACCENT}
-                  group='material-design'
-                />
-              </TouchableOpacity>
               <SubTitle size={22} color={Colors.PRIMARY} text='Menú de hoy' />
               <SubTitle
                 size={18}
@@ -67,49 +71,15 @@ export default function HomeScreen({ navigation }) {
                 <DayMeal dayFoodList={todayMenu} />
               ) : null}
             </View>
-          </View>
-        </Modal>
-        <SubTitle text='Welcome back!' color={Colors.ACCENT} size={22} />
-        <Title text={name} />
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginVertical: 40,
-          }}>
-          <ActionButton
-            text='Hoy'
-            iconName='calendar'
-            onClick={async () => {
-              setModalVisible(true);
-              getTodayMenu().then((data) => {
-                setTodayMenu(data);
-              });
-            }}
-          />
-          <ActionButton
-            text='Semana'
-            iconName='cutlery'
-            onClick={() => navigation.navigate("WeekView")}
-          />
-          <ActionButton
-            text='Comprar'
-            iconName='shopping-cart'
-            onClick={() => navigation.navigate("ShoppingList")}
-          />
         </View>
-
-        <Cards
-          iconName='idea'
-          title='Tip:'
-          content='Verifica con antelación el menú del día, para que puedas preparar a tiempom tus alimentos'
-        />
-        <Cards
-          background={Colors.PRIMARY}
-          color={Colors.WHITE}
-          title='Agregar platillo al menú'
-          content='Por el momento esta es una opción deshabilitada.'
-        />
+        <TouchableOpacity onPress={()=>navigation.navigate("New")}>
+            <Cards
+                background={Colors.PRIMARY}
+                color={Colors.WHITE}
+                title='Genera un nuevo menú'
+                content='Si no estás complacido con las opciones de esta semana, puedes volver a configurar tu menú.'
+            />
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -117,16 +87,18 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: Colors.BG_COLOR,
   },
-  content: { paddingHorizontal: 30, paddingTop: 60 },
+  content: { 
+    backgroundColor: Colors.BG_COLOR,
+    paddingHorizontal: 30,
+  },
   cardContent: {
     margin: 25,
   },
   modalContent: {
     backgroundColor: Colors.WHITE,
-    height: "72%",
+    height: 350,
     width: "100%",
     padding: 30,
     paddingVertical: 40,
@@ -137,6 +109,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 3,
   },
 });

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-ico";
 import Colors from "../constants/Colors";
 
-export default function ActionButton({ onClick, text, iconName }) {
+export default function ActionButton({ onClick, text, iconName, group = "basic" }) {
   return (
     <View>
       <TouchableOpacity onPress={onClick} style={styles.button}>
@@ -12,7 +12,7 @@ export default function ActionButton({ onClick, text, iconName }) {
           height='35'
           width='35'
           color={Colors.PRIMARY}
-          group='basic'
+          group= {group}
         />
       </TouchableOpacity>
       <Text style={styles.text}>{text}</Text>

@@ -12,7 +12,7 @@ export default function LoginInput({ label, type, onChange, text }) {
         value={text}
         autoCapitalize='none'
         secureTextEntry={type == "password" ? true : false}
-        style={{ height: 60, color: Colors.SECONDARY }}
+        style={{ height: 60, color: Colors.SECONDARY, borderBottomWidth: 2, borderColor: Colors.PRIMARY }}
       />
     </View>
   );

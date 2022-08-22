@@ -6,25 +6,14 @@ import Button from "../components/Button";
 import LoginInput from "../components/LoginInput";
 // import { getUsers, authenticateUser } from "../utils/api/firebaseConfig";
 import { auth } from "../../firebase";
+import { authenticateUser } from "../utils/api/firebaseConfig";
 
 export default function Login({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    auth.onAuthStateChanged(user => {
-      navigation.navigate("AppHome");
-    })
-  }, []);
-
   const onSubmit = (username, password) => {
-    auth
-    .signInWithEmailAndPassword(username, password)
-    .then(userCredentials => {
-      const user = userCredentials.user;
-      console.log("Logged with: ", user.email);
-    })
-    .catch(error => aleter(error.message));
+    authenticateUser(username, password, navigation)
     // authenticateUser(username, password, navigation);
   };
   return (
@@ -43,7 +32,7 @@ export default function Login({ navigation }) {
             onChange={(text) => setUsername(text)}
           />
           <LoginInput
-            label='Contraseña'
+            label='ContraseÃ±a'
             type='password'
             text={password}
             onChange={(text) => setPassword(text)}

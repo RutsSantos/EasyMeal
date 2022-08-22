@@ -3,7 +3,7 @@ import { Image, View, StyleSheet } from "react-native";
 import Colors from "../constants/Colors";
 import { Title, ContentText } from "../components/Text";
 import Button from "../components/Button";
-// import { getFoodItem } from "../utils/api/firebaseConfig";
+import { getFoodItem } from "../utils/api/firebaseConfig";
 
 export default function NewMenu() {
   return (
@@ -18,8 +18,8 @@ export default function NewMenu() {
       <View style={styles.content}>
         <Title text='Generar nuevo menú' />
         <ContentText text="Al presionar el botón de 'Iniciar' generarás un nuevo menú para esta semana, empezando por el Lunes, y estarías sustituyendo cualquier menú ya existente. - La distribución de las comidas es aleatoria." />
-        <View style={{ marginTop: "25%" }}>
-          {/* <Button text='Iniciar' onClick={() => getFoodItem()} /> */}
+        <View style={{ marginVertical: 30 }}>
+          <Button text='Iniciar' onClick={() => getFoodItem()} />
         </View>
       </View>
     </View>

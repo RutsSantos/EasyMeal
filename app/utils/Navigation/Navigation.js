@@ -13,6 +13,7 @@ const Tab = createBottomTabNavigator();
 export default function Navigation() {
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
+      headerShown: false,
       tabBarIcon: ({ focused }) => {
         let iconName;
         if (route.name === 'Home') {
@@ -36,7 +37,6 @@ export default function Navigation() {
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="New" component={NewMenu} />
       <Tab.Screen name="Profile" component={Profile} />
-
     </Tab.Navigator>
   );
 }
