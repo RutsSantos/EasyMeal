@@ -12,10 +12,6 @@ export default function Login({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const onSubmit = (username, password) => {
-    authenticateUser(username, password, navigation)
-    // authenticateUser(username, password, navigation);
-  };
   return (
     <View style={styles.container}>
       <Image
@@ -32,13 +28,13 @@ export default function Login({ navigation }) {
             onChange={(text) => setUsername(text)}
           />
           <LoginInput
-            label='ContraseÃ±a'
+            label='Contraseña'
             type='password'
             text={password}
             onChange={(text) => setPassword(text)}
           />
         </View>
-        <Button text='Ingresar' onClick={() => onSubmit(username, password)} />
+        <Button text='Ingresar' onClick={() => authenticateUser(username, password, navigation)} />
       </View>
     </View>
   );

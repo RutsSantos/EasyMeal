@@ -13,9 +13,11 @@ import {Storage} from "../constants/Storage";
 
 export default function Profile({navigation}) {
   const [user, setUser] = useState({})
+
   useEffect(()=>{
     getData(Storage.USER).then((user)=>{
-      setUser(user);
+      if (user != null)
+        setUser(user);
     })
   },[]);
 
@@ -35,7 +37,7 @@ export default function Profile({navigation}) {
   return (
     <View style={styles.container}>
       <View style={{ width: "60%" }}>
-        <Title text='Infomación de usuario' />
+        <Title text='InfomaciÃ³n de usuario' />
       </View>
       <View style={styles.margin}>
         {/* <Thumbnail
@@ -48,17 +50,17 @@ export default function Profile({navigation}) {
           source={require("../assets/img/salad.jpg")}
         /> */}
         <View style={styles.margin}>
-          <SubTitle text={user.name} />
+          <SubTitle text={user.displayName || ''} />
           <View style={styles.margin}>
             <ContentText text='Correo:' />
-            <ContentText text={user.email} />
+            <ContentText text={user.email || ''} />
             <ContentText text='Miembro desde:' />
-            <ContentText text={user.name} />
+            <ContentText text={user.name || ''} />
           </View>
 
           <View style={styles.margin}>
-            <Button text='Cerrar sesión' outlined onClick={()=> closeSession()} />
-            {/* <ContentText text='Cambiar contraseña' color={Colors.PRIMARY} /> */}
+            <Button text='Cerrar sesiÃ³n' outlined onClick={()=> closeSession()} />
+            {/* <ContentText text='Cambiar contraseÃ±a' color={Colors.PRIMARY} /> */}
           </View>
         </View>
       </View>

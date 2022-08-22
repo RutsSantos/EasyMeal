@@ -11,6 +11,7 @@ export function addUser(user) {
   //Adds user to firebase
   auth.createUserWithEmailAndPassword(user.email, user.password)
     .then(() => console.log("User added!"));
+  auth.currentUser.updateProfile({ displayName: email.split("@")[0] });
 }
 
 export function authenticateUser(email, password, navigation) {
@@ -21,12 +22,14 @@ export function authenticateUser(email, password, navigation) {
 
   storeData(Storage.USER, auth.currentUser);
 
-  navigation.navigate("AppHome")
+  navigation.replace("Login", null)
 }
 
 export function logout() {
-  if (auth.currentUser)
+  if (auth.currentUser) {
     auth.signOut();
+    storeData(Storage.USER, null);
+  }
 }
 
 export async function getUsers() {
@@ -40,14 +43,11 @@ export async function getUsers() {
 
 export async function getFoodItem() {
   //Get the list of food and transforme it in a random array of food per week
-  console.log("breakfast, meal, dinner");
-
   var foodlist = [];
   const [breakfast, meal, dinner] = [[], [], []];
   await firestoreRequest("desayunos", breakfast, foodlist);
   await firestoreRequest("almuerzos", meal, foodlist);
   await firestoreRequest("cenas", dinner, foodlist);
-  console.log(breakfast, meal, dinner);
   const week = randomCreator(foodlist);
   await storeData(Storage.WEEK_MENU, week);
   const user = await getData(Storage.USER);
@@ -79,8 +79,7 @@ async function firestoreRequest(collection, array, foodList) {
       documentSnapshot.forEach((doc) => {
         array.push(doc.data());
       });
-    })
-    .catch(error => console.warn(error));
+    });
   foodList && foodList.push({ [collection]: array });
   return array;
 }
