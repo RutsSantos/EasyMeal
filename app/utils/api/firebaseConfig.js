@@ -6,6 +6,7 @@ import {
   createShoppingList,
 } from "../Helpers";
 import { Storage } from "../../constants/Storage";
+import { auth } from "../../../firebase";
 
 export function addUser(user) {
   //Adds user to firebase

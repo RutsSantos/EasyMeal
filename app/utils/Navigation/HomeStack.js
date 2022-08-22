@@ -1,11 +1,11 @@
 import React from "react";
 
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../../views/Home';
 import ShoppingList from '../../views/ShoppingList';
 import WeekView from '../../views/WeekView';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function HomeStack() {
   return (

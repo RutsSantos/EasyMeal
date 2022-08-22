@@ -1,22 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Image, View, StyleSheet } from "react-native";
-// import { Form } from "native-base";
 import Colors from "../constants/Colors";
 import { Title } from "../components/Text";
 import Button from "../components/Button";
 import LoginInput from "../components/LoginInput";
-import { getUsers, authenticateUser } from "../utils/api/firebaseConfig";
+// import { getUsers, authenticateUser } from "../utils/api/firebaseConfig";
+import { auth } from "../../firebase";
 
 export default function Login({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    getUsers().then(() => console.log("users!"));
+    auth.onAuthStateChanged(user => {
+      navigation.navigate("AppHome");
+    })
   }, []);
 
   const onSubmit = (username, password) => {
-    authenticateUser(username, password, navigation);
+    auth
+    .signInWithEmailAndPassword(username, password)
+    .then(userCredentials => {
+      const user = userCredentials.user;
+      console.log("Logged with: ", user.email);
+    })
+    .catch(error => aleter(error.message));
+    // authenticateUser(username, password, navigation);
   };
   return (
     <View style={styles.container}>
@@ -27,7 +36,7 @@ export default function Login({ navigation }) {
       />
       <View style={styles.content}>
         <Title text='EasyMeal' />
-        {/* <Form style={{marginVertical: 40}}>
+        <View style={{marginVertical: 40}}>
           <LoginInput
             label='Usuario/correo'
             text={username}
@@ -39,7 +48,7 @@ export default function Login({ navigation }) {
             text={password}
             onChange={(text) => setPassword(text)}
           />
-        </Form> */}
+        </View>
         <Button text='Ingresar' onClick={() => onSubmit(username, password)} />
       </View>
     </View>

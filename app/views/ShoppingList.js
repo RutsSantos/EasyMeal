@@ -6,7 +6,7 @@ import Colors from "../constants/Colors";
 import { Title, ContentText } from "../components/Text";
 import ArrowBack from "../components/ArrowBack";
 import { getData, storeData } from "../utils/Helpers";
-import { updateShoppingList } from "../utils/api/firebaseConfig";
+// import { updateShoppingList } from "../utils/api/firebaseConfig";
 
 import { Storage } from "../constants/Storage";
 
@@ -16,7 +16,7 @@ export default function ShoppingList({ navigation }) {
 
   useEffect(() => {
     navigation.addListener('blur', () => {
-      updateShoppingList(shoppingList).then(()=>{});
+      // updateShoppingList(shoppingList).then(()=>{});
     });
 
     getData(Storage.SHOPPING).then((data) => {
